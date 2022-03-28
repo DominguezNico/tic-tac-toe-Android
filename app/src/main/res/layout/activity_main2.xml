@@ -23,10 +23,11 @@
         android:layout_height="100dp"
         android:layout_marginTop="32dp"
         android:backgroundTint="@color/white"
-        android:text="-"
+        android:textSize="60dp"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
+        android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/arribaMed" />
 
@@ -37,8 +38,9 @@
         android:layout_marginTop="36dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/white"
-        android:text="-"
+        android:textSize="60dp"
         android:textColor="@color/black"
+        android:text=""
         app:layout_constraintEnd_toStartOf="@+id/abajoMed"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +54,8 @@
         android:layout_marginTop="136dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/white"
-
+        android:textSize="60dp"
+        android:text=""
         android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@+id/arribaMed"
         app:layout_constraintTop_toTopOf="parent"
@@ -65,7 +68,8 @@
         android:layout_height="100dp"
         android:layout_marginTop="136dp"
         android:backgroundTint="@color/white"
-        android:text="-"
+        android:textSize="60dp"
+        android:text=""
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -79,7 +83,8 @@
         android:layout_marginStart="36dp"
         android:layout_marginTop="36dp"
         android:backgroundTint="@color/white"
-        android:text="-"
+        android:textSize="60dp"
+        android:text=""
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/abajoMed"
         app:layout_constraintTop_toBottomOf="@+id/medioDer" />
@@ -91,7 +96,8 @@
         android:layout_marginStart="36dp"
         android:layout_marginTop="32dp"
         android:backgroundTint="@color/white"
-        android:text="-"
+        android:textSize="60dp"
+        android:text=""
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/medioMed"
         app:layout_constraintTop_toBottomOf="@+id/arribaDer" />
@@ -102,7 +108,8 @@
         android:layout_height="100dp"
         android:layout_marginTop="36dp"
         android:backgroundTint="@color/white"
-        android:text="-"
+        android:textSize="60dp"
+        android:text=""
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -116,7 +123,8 @@
         android:layout_marginStart="36dp"
         android:layout_marginTop="136dp"
         android:backgroundTint="@color/white"
-        android:text="-"
+        android:textSize="60dp"
+        android:text=""
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/arribaMed"
         app:layout_constraintTop_toTopOf="parent" />
@@ -129,8 +137,9 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/white"
-        android:text="-"
+        android:textSize="60dp"
         android:textColor="@color/black"
+        android:text=""
         app:layout_constraintEnd_toStartOf="@+id/medioMed"
         app:layout_constraintTop_toBottomOf="@+id/arribaIzq" />
 
@@ -154,6 +163,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
+        android:id="@+id/view"
         android:layout_width="1dp"
         android:layout_height="360dp"
         android:layout_marginTop="144dp"
@@ -194,4 +204,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="116dp"
+        android:text="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintStart_toEndOf="@+id/textView3" />
 </androidx.constraintlayout.widget.ConstraintLayout>
