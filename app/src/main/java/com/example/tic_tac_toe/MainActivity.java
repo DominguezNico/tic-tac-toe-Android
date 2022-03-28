@@ -37,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
                 boolean simboloCirculo= circulo.isChecked();
 
                 if((simboloCruz==false && simboloCirculo==false) || simboloCruz==true)
-                    i.putExtra("simbolo","cruz");
+                    i.putExtra("simbolo",true);
                 else
-                    i.putExtra("simbolo","circulo");
+                    i.putExtra("simbolo",false);
 
 
                 if(pasarNombre.isEmpty())
