@@ -173,7 +173,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button11"
+        android:id="@+id/volverAJugar"
         android:layout_width="181dp"
         android:layout_height="65dp"
         android:layout_marginBottom="24dp"

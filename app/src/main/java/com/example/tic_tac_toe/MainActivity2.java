@@ -1,12 +1,11 @@
 package com.example.tic_tac_toe;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,6 +21,7 @@ public class MainActivity2 extends AppCompatActivity {
     Button abajoIzq;
     Button abajoMed;
     Button abajoDer;
+    Button volverAJugar;
 
     TextView aJugar;
     TextView score;
@@ -32,10 +32,11 @@ public class MainActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
 
         String nombre = getIntent().getStringExtra("nombre");
-        aJugar = (TextView) findViewById(R.id.aJugar);
-        score= (TextView) findViewById(R.id.score);
 
-        Boolean simbolo = getIntent().getBooleanExtra("simbolo",true);
+        aJugar = findViewById(R.id.aJugar);
+        score= findViewById(R.id.score);
+
+        boolean simbolo = getIntent().getBooleanExtra("simbolo",true);
 
         arribaIzq = findViewById(R.id.arribaIzq);
         arribaMed = findViewById(R.id.arribaMed);
@@ -46,11 +47,11 @@ public class MainActivity2 extends AppCompatActivity {
         abajoIzq = findViewById(R.id.abajoIzq);
         abajoMed = findViewById(R.id.abajoMed);
         abajoDer = findViewById(R.id.abajoDer);
+        volverAJugar = findViewById(R.id.volverAJugar);
 
 
 
-        if(simbolo==true){
-
+        if(simbolo){
 
             setterClick(arribaIzq,"X");
             setterClick(arribaMed,"X");
@@ -61,8 +62,6 @@ public class MainActivity2 extends AppCompatActivity {
             setterClick(abajoIzq,"X");
             setterClick(abajoMed,"X");
             setterClick(abajoDer,"X");
-
-            comprobarJugada("X","O");
 
 
 
@@ -80,35 +79,76 @@ public class MainActivity2 extends AppCompatActivity {
             setterClick(abajoDer,"O");
         }
 
-        aJugar.setText(nombre +", Que comience el juego!");
+        String texto=nombre +", Que comience el juego!";
+
+        aJugar.setText(texto);
+
+
 
 
     }
 
     private void setterClick(Button btn ,String simbolo){
         String maq;
-        if(simbolo=="X")
-            maq="O";
-        else
+        if(simbolo.equals("O"))
             maq="X";
+        else
+            maq="O";
+
+            btn.setOnClickListener(view -> {
+
+                btn.setText(simbolo);
+                btn.setEnabled(false);
+
+                String estado = comprobarJugada(simbolo);
+
+                if(estado.equals("ganaste") || estado.equals("perdiste")) {
+
+                    volverAJugar.setOnClickListener(view1 -> {
+                        arribaIzq.setText(null);
+                        arribaMed.setText(null);
+                        arribaDer.setText(null);
+
+                        medioIzq.setText(null);
+                        medioMed.setText(null);
+                        medioDer.setText(null);
+
+                        abajoIzq.setText(null);
+                        abajoMed.setText(null);
+                        abajoDer.setText(null);
 
 
+                        arribaIzq.setEnabled(true);
+                        arribaMed.setEnabled(true);
+                        arribaDer.setEnabled(true);
 
+                        medioIzq.setEnabled(true);
+                        medioMed.setEnabled(true);
+                        medioDer.setEnabled(true);
 
-            btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+                        abajoIzq.setEnabled(true);
+                        abajoMed.setEnabled(true);
+                        abajoDer.setEnabled(true);
 
-                    btn.setText(simbolo);
-                    btn.setEnabled(false);
+                        int blanco = Color.parseColor("#ffffff");
 
-                    String estado = comprobarJugada(simbolo, maq);
+                         arribaIzq.setBackgroundColor(blanco);
+                         arribaMed.setBackgroundColor(blanco);
+                         arribaDer.setBackgroundColor(blanco);
+                         medioIzq.setBackgroundColor(blanco);
+                         medioMed.setBackgroundColor(blanco);
+                         medioDer.setBackgroundColor(blanco);
+                         abajoIzq.setBackgroundColor(blanco);
+                         abajoMed.setBackgroundColor(blanco);
+                         abajoDer.setBackgroundColor(blanco);
 
-                    if(estado!="perdiste" || estado!="ganaste")
-                        elegir(maq);
-                    estado = comprobarJugada(simbolo, maq);
-
+                        setScore(estado);
+                    });
                 }
+                if(estado.equals("nada"))
+                    elegir(maq);
+
+                comprobarJugada(simbolo);
 
             });
 
@@ -118,12 +158,15 @@ public class MainActivity2 extends AppCompatActivity {
    private void setterAuto(Button btn,String simbolo){
         btn.setText(simbolo);
         btn.setEnabled(false);
+
+
+
     }
 
 
     private void elegir(String simbolo){
 
-        ArrayList<Integer> casillas=new ArrayList<Integer>();
+        ArrayList<Integer> casillas= new ArrayList<>();
 
         if( arribaIzq.getText().toString().isEmpty()){
           casillas.add(1);
@@ -183,138 +226,138 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     private void setScore(String estado){
-        Integer valor=Integer.parseInt(score.getText().toString());
+        int valor=Integer.parseInt(score.getText().toString());
         String total;
 
-        if(estado=="Ganaste") {
+        if(estado.equals("ganaste")) {
             valor = valor + 10;
-            total = valor.toString();
+            total = Integer.toString(valor);
             score.setText(total);
 
-        }else if (estado=="Perdiste"){
+        }else if (estado.equals("perdiste")){
             valor=valor-5;
-            total=valor.toString();
+            total= Integer.toString(valor);
             score.setText(total);
         }
     }
 
-    public String comprobarJugada(String jugador, String maquina){
+    public String comprobarJugada(String jugador){
 
         int verde = Color.parseColor("#98ff98");
         int rojo = Color.parseColor("#ff9688");
-        if(arribaIzq.getText().toString()==arribaDer.getText().toString() && arribaDer.getText().toString()==arribaMed.getText().toString() && (arribaMed.getText().toString()=="X" || arribaMed.getText().toString()=="O")){
-          if(arribaIzq.getText().toString()==maquina){
 
-
-
-              arribaIzq.setBackgroundColor(rojo);
-              arribaDer.setBackgroundColor(rojo);
-              arribaMed.setBackgroundColor(rojo);
-              arribaMed.setEnabled(false);arribaIzq.setEnabled(false);arribaDer.setEnabled(false);medioIzq.setEnabled(false);medioMed.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
-
-              return "perdiste";
-          }else{
-
+        if(arribaIzq.getText().toString().equals(arribaDer.getText().toString())  && arribaDer.getText().toString().equals(arribaMed.getText().toString())  && (arribaMed.getText().toString().equals("X") || arribaMed.getText().toString().equals("O"))){
+          if(arribaIzq.getText().toString().equals(jugador)){
 
               arribaIzq.setBackgroundColor(verde);
               arribaDer.setBackgroundColor(verde);
               arribaMed.setBackgroundColor(verde);
-              arribaMed.setEnabled(false);arribaIzq.setEnabled(false);arribaDer.setEnabled(false);medioIzq.setEnabled(false);medioMed.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
+             medioIzq.setEnabled(false);medioMed.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
+
               return "ganaste";
+          }else{
+
+              arribaIzq.setBackgroundColor(rojo);
+              arribaDer.setBackgroundColor(rojo);
+              arribaMed.setBackgroundColor(rojo);
+              medioIzq.setEnabled(false);medioMed.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
+              return "perdiste";
           }
 
-        }else if(arribaIzq.getText().toString()==medioMed.getText().toString() && medioMed.getText().toString()==abajoDer.getText().toString() && (abajoDer.getText().toString()=="X" || abajoDer.getText().toString()=="O")){
-            if(arribaIzq.getText().toString()==maquina){
-
-                arribaIzq.setBackgroundColor(rojo);
-                medioMed.setBackgroundColor(rojo);
-                abajoDer.setBackgroundColor(rojo);
-                arribaMed.setEnabled(false);arribaIzq.setEnabled(false);arribaDer.setEnabled(false);medioIzq.setEnabled(false);medioMed.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
-
-                return "perdiste";
-            }else{
+        }else if(arribaIzq.getText().toString().equals(medioMed.getText().toString()) && medioMed.getText().toString().equals(abajoDer.getText().toString()) && (abajoDer.getText().toString().equals("X") || abajoDer.getText().toString().equals("O"))){
+            if(arribaIzq.getText().toString().equals(jugador)){
 
 
                 arribaIzq.setBackgroundColor(verde);
                 medioMed.setBackgroundColor(verde);
                 abajoDer.setBackgroundColor(verde);
-                arribaMed.setEnabled(false);arribaIzq.setEnabled(false);arribaDer.setEnabled(false);medioIzq.setEnabled(false);medioMed.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
+                arribaMed.setEnabled(false);arribaDer.setEnabled(false);medioIzq.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoMed.setEnabled(false);
+
                 return "ganaste";
-            }
-        }else if(arribaIzq.getText().toString()==medioIzq.getText().toString() && medioIzq.getText().toString()==abajoIzq.getText().toString() && (abajoIzq.getText().toString()=="X" || abajoIzq.getText().toString()=="O")){
-            if(arribaIzq.getText().toString()==maquina){
+            }else{
 
                 arribaIzq.setBackgroundColor(rojo);
-                medioIzq.setBackgroundColor(rojo);
-                abajoIzq.setBackgroundColor(rojo);
-                arribaMed.setEnabled(false);arribaIzq.setEnabled(false);arribaDer.setEnabled(false);medioIzq.setEnabled(false);medioMed.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
-
+                medioMed.setBackgroundColor(rojo);
+                abajoDer.setBackgroundColor(rojo);
+                arribaMed.setEnabled(false);arribaDer.setEnabled(false);medioIzq.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoMed.setEnabled(false);
                 return "perdiste";
-            }else{
+            }
+        }else if(arribaIzq.getText().toString().equals(medioIzq.getText().toString()) && medioIzq.getText().toString().equals(abajoIzq.getText().toString()) && (abajoIzq.getText().toString().equals("X") || abajoIzq.getText().toString().equals("O"))){
+            if(arribaIzq.getText().toString().equals(jugador)){
 
 
                 arribaIzq.setBackgroundColor(verde);
                 medioIzq.setBackgroundColor(verde);
                 abajoIzq.setBackgroundColor(verde);
-                arribaMed.setEnabled(false);arribaIzq.setEnabled(false);arribaDer.setEnabled(false);medioIzq.setEnabled(false);medioMed.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
+                arribaMed.setEnabled(false);arribaDer.setEnabled(false);medioMed.setEnabled(false);medioDer.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
+
                 return "ganaste";
-            }
-        }else if(medioIzq.getText().toString()==medioMed.getText().toString() && medioMed.getText().toString()==medioDer.getText().toString() && (abajoDer.getText().toString()=="X" || abajoDer.getText().toString()=="O")){
-            if(arribaIzq.getText().toString()==maquina){
-
-                medioIzq.setBackgroundColor(rojo);
-                medioMed.setBackgroundColor(rojo);
-                medioDer.setBackgroundColor(rojo);
-                arribaMed.setEnabled(false);arribaIzq.setEnabled(false);arribaDer.setEnabled(false);medioIzq.setEnabled(false);medioMed.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
-
-                return "perdiste";
             }else{
+
+                arribaIzq.setBackgroundColor(rojo);
+                medioIzq.setBackgroundColor(rojo);
+                abajoIzq.setBackgroundColor(rojo);
+                arribaMed.setEnabled(false);arribaDer.setEnabled(false);medioMed.setEnabled(false);medioDer.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
+                return "perdiste";
+            }
+        }else if(medioIzq.getText().toString().equals(medioMed.getText().toString()) && medioMed.getText().toString().equals(medioDer.getText().toString()) && (medioDer.getText().toString().equals("X") || medioDer.getText().toString().equals("O"))){
+            if(medioDer.getText().toString().equals(jugador)){
 
 
                 medioIzq.setBackgroundColor(verde);
                 medioMed.setBackgroundColor(verde);
                 medioDer.setBackgroundColor(verde);
-                arribaMed.setEnabled(false);arribaIzq.setEnabled(false);arribaDer.setEnabled(false);medioIzq.setEnabled(false);medioMed.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
+                arribaMed.setEnabled(false);arribaIzq.setEnabled(false);arribaDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
+
                 return "ganaste";
-            }
-        }else if(abajoIzq.getText().toString()==abajoMed.getText().toString() && abajoMed.getText().toString()==abajoDer.getText().toString() && (abajoDer.getText().toString()=="X" || abajoDer.getText().toString()=="O")){
-            if(arribaIzq.getText().toString()==maquina){
-
-                abajoIzq.setBackgroundColor(rojo);
-                abajoMed.setBackgroundColor(rojo);
-                abajoDer.setBackgroundColor(rojo);
-                arribaMed.setEnabled(false);arribaIzq.setEnabled(false);arribaDer.setEnabled(false);medioIzq.setEnabled(false);medioMed.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
-
-                return "perdiste";
             }else{
+
+                medioIzq.setBackgroundColor(rojo);
+                medioMed.setBackgroundColor(rojo);
+                medioDer.setBackgroundColor(rojo);
+                arribaMed.setEnabled(false);arribaIzq.setEnabled(false);arribaDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
+                return "perdiste";
+            }
+        }else if(abajoIzq.getText().toString().equals(abajoMed.getText().toString()) && abajoMed.getText().toString().equals(abajoDer.getText().toString()) && (abajoDer.getText().toString().equals("X") || abajoDer.getText().toString().equals("O"))){
+            if(abajoIzq.getText().toString().equals(jugador)){
 
 
                 abajoIzq.setBackgroundColor(verde);
                 abajoMed.setBackgroundColor(verde);
                 abajoDer.setBackgroundColor(verde);
-                arribaMed.setEnabled(false);arribaIzq.setEnabled(false);arribaDer.setEnabled(false);medioIzq.setEnabled(false);medioMed.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
+                arribaMed.setEnabled(false);arribaIzq.setEnabled(false);arribaDer.setEnabled(false);medioIzq.setEnabled(false);medioMed.setEnabled(false);medioDer.setEnabled(false);
+
                 return "ganaste";
-            }
-        }else if(abajoDer.getText().toString()==medioMed.getText().toString() && abajoIzq.getText().toString()==abajoDer.getText().toString() && (abajoIzq.getText().toString()=="X" || abajoIzq.getText().toString()=="O")){
-            if(arribaIzq.getText().toString()==maquina){
-
-                abajoDer.setBackgroundColor(rojo);
-                medioMed.setBackgroundColor(rojo);
-                arribaIzq.setBackgroundColor(rojo);
-                arribaMed.setEnabled(false);arribaIzq.setEnabled(false);arribaDer.setEnabled(false);medioIzq.setEnabled(false);medioMed.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
-
-                return "perdiste";
             }else{
 
-
-                abajoDer.setBackgroundColor(verde);
-                medioMed.setBackgroundColor(verde);
-                arribaIzq.setBackgroundColor(verde);
-                arribaMed.setEnabled(false);arribaIzq.setEnabled(false);arribaDer.setEnabled(false);medioIzq.setEnabled(false);medioMed.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
-                return "ganaste";
+                abajoIzq.setBackgroundColor(rojo);
+                abajoMed.setBackgroundColor(rojo);
+                abajoDer.setBackgroundColor(rojo);
+                arribaMed.setEnabled(false);arribaIzq.setEnabled(false);arribaDer.setEnabled(false);medioIzq.setEnabled(false);medioMed.setEnabled(false);medioDer.setEnabled(false);
+                return "perdiste";
             }
+        }else if(abajoIzq.getText().toString().equals(medioMed.getText().toString()) && abajoIzq.getText().toString().equals(arribaDer.getText().toString()) && (abajoIzq.getText().toString().equals("X") || abajoIzq.getText().toString().equals("O"))){
+            if(abajoIzq.getText().toString().equals(jugador)){
+
+
+                abajoIzq.setBackgroundColor(verde);
+                medioMed.setBackgroundColor(verde);
+                arribaDer.setBackgroundColor(verde);
+                arribaMed.setEnabled(false);medioIzq.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
+
+                return "ganaste";
+            }else{
+
+                abajoIzq.setBackgroundColor(rojo);
+                medioMed.setBackgroundColor(rojo);
+                arribaDer.setBackgroundColor(rojo);
+                arribaMed.setEnabled(false);medioIzq.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
+                return "perdiste";
+            }
+        }else{
+            return "nada";
         }
-        return "nada";
+
     }
 
 }
