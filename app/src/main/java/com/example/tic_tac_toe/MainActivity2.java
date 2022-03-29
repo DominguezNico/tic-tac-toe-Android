@@ -351,7 +351,7 @@ public class MainActivity2 extends AppCompatActivity {
                 abajoIzq.setBackgroundColor(rojo);
                 medioMed.setBackgroundColor(rojo);
                 arribaDer.setBackgroundColor(rojo);
-                arribaMed.setEnabled(false);medioIzq.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
+                arribaIzq.setEnabled(false); arribaMed.setEnabled(false);medioIzq.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
                 return "perdiste";
             }
         }else{
