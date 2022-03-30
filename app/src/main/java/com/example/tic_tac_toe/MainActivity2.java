@@ -77,6 +77,7 @@ public class MainActivity2 extends AppCompatActivity {
             setterClick(abajoIzq,"O");
             setterClick(abajoMed,"O");
             setterClick(abajoDer,"O");
+            rejugar("X");
         }
 
         String texto=nombre +", Que comience el juego!";
@@ -95,60 +96,30 @@ public class MainActivity2 extends AppCompatActivity {
         else
             maq="O";
 
+
+
             btn.setOnClickListener(view -> {
 
                 btn.setText(simbolo);
                 btn.setEnabled(false);
 
                 String estado = comprobarJugada(simbolo);
+                String aux;
+                int aux1;
 
                 if(estado.equals("ganaste") || estado.equals("perdiste")) {
-
-                    volverAJugar.setOnClickListener(view1 -> {
-                        arribaIzq.setText(null);
-                        arribaMed.setText(null);
-                        arribaDer.setText(null);
-
-                        medioIzq.setText(null);
-                        medioMed.setText(null);
-                        medioDer.setText(null);
-
-                        abajoIzq.setText(null);
-                        abajoMed.setText(null);
-                        abajoDer.setText(null);
-
-
-                        arribaIzq.setEnabled(true);
-                        arribaMed.setEnabled(true);
-                        arribaDer.setEnabled(true);
-
-                        medioIzq.setEnabled(true);
-                        medioMed.setEnabled(true);
-                        medioDer.setEnabled(true);
-
-                        abajoIzq.setEnabled(true);
-                        abajoMed.setEnabled(true);
-                        abajoDer.setEnabled(true);
-
-                        int blanco = Color.parseColor("#ffffff");
-
-                         arribaIzq.setBackgroundColor(blanco);
-                         arribaMed.setBackgroundColor(blanco);
-                         arribaDer.setBackgroundColor(blanco);
-                         medioIzq.setBackgroundColor(blanco);
-                         medioMed.setBackgroundColor(blanco);
-                         medioDer.setBackgroundColor(blanco);
-                         abajoIzq.setBackgroundColor(blanco);
-                         abajoMed.setBackgroundColor(blanco);
-                         abajoDer.setBackgroundColor(blanco);
-
-                        setScore(estado);
-                    });
+                    rejugar(maq);
+                    aux=setScore(estado);
+                    estado=aux;
+                }else if(estado.equals("nada")){
+                    aux1= elegir(maq);
+                    if(aux1==0){
+                        rejugar(maq);
+                    }
+                    comprobarJugada(simbolo);
                 }
-                if(estado.equals("nada"))
-                    elegir(maq);
 
-                comprobarJugada(simbolo);
+
 
             });
 
@@ -159,12 +130,81 @@ public class MainActivity2 extends AppCompatActivity {
         btn.setText(simbolo);
         btn.setEnabled(false);
 
+        String estado = comprobarJugada(simbolo);
+        String aux;
+
+        if(estado.equals("ganaste")){
+            estado="perdiste";
+            rejugar(simbolo);
+            aux=setScore(estado);
+            estado=aux;
+
+        }
+
+        else if (estado.equals("perdiste")){
+            estado="ganaste";
+            rejugar(simbolo);
+            aux=setScore(estado);
+            estado=aux;
+
+        }
+
+    }
+
+
+    private void rejugar(String maq){
+
+
+        volverAJugar.setOnClickListener(view1 -> {
+            arribaIzq.setText(null);
+            arribaMed.setText(null);
+            arribaDer.setText(null);
+
+            medioIzq.setText(null);
+            medioMed.setText(null);
+            medioDer.setText(null);
+
+            abajoIzq.setText(null);
+            abajoMed.setText(null);
+            abajoDer.setText(null);
+
+
+            arribaIzq.setEnabled(true);
+            arribaMed.setEnabled(true);
+            arribaDer.setEnabled(true);
+
+            medioIzq.setEnabled(true);
+            medioMed.setEnabled(true);
+            medioDer.setEnabled(true);
+
+            abajoIzq.setEnabled(true);
+            abajoMed.setEnabled(true);
+            abajoDer.setEnabled(true);
+
+            int blanco = Color.parseColor("#ffffff");
+
+            arribaIzq.setBackgroundColor(blanco);
+            arribaMed.setBackgroundColor(blanco);
+            arribaDer.setBackgroundColor(blanco);
+            medioIzq.setBackgroundColor(blanco);
+            medioMed.setBackgroundColor(blanco);
+            medioDer.setBackgroundColor(blanco);
+            abajoIzq.setBackgroundColor(blanco);
+            abajoMed.setBackgroundColor(blanco);
+            abajoDer.setBackgroundColor(blanco);
+
+            if(maq.equals("X")){
+                elegir(maq);
+            }
+
+
+        });
 
 
     }
 
 
-    private void elegir(String simbolo){
+    private int elegir(String simbolo){
 
         ArrayList<Integer> casillas= new ArrayList<>();
 
@@ -197,35 +237,38 @@ public class MainActivity2 extends AppCompatActivity {
         }
 
 
+        if(casillas.size()!=0){
+            Random generador = new Random();
+            int i = generador.nextInt(casillas.size());
+            int elegida= casillas.get(i);
 
 
-        Random generador = new Random();
-        int i = generador.nextInt(casillas.size());
-        int elegida= casillas.get(i);
-
-
-        if(elegida==1){
-            setterAuto(arribaIzq,simbolo);
-        }else if(elegida==2){
-            setterAuto(arribaMed,simbolo);
-        }else if(elegida==3){
-            setterAuto(arribaDer,simbolo);
-        }else if(elegida==4){
-            setterAuto(medioIzq,simbolo);
-        }else if(elegida==5){
-            setterAuto(medioMed,simbolo);
-        }else if(elegida==6){
-            setterAuto(medioDer,simbolo);
-        }else if(elegida==7){
-            setterAuto(abajoIzq,simbolo);
-        }else if(elegida==8){
-            setterAuto(abajoMed,simbolo);
-        }else if(elegida==9){
-            setterAuto(abajoDer,simbolo);
+            if(elegida==1){
+                setterAuto(arribaIzq,simbolo);
+            }else if(elegida==2){
+                setterAuto(arribaMed,simbolo);
+            }else if(elegida==3){
+                setterAuto(arribaDer,simbolo);
+            }else if(elegida==4){
+                setterAuto(medioIzq,simbolo);
+            }else if(elegida==5){
+                setterAuto(medioMed,simbolo);
+            }else if(elegida==6){
+                setterAuto(medioDer,simbolo);
+            }else if(elegida==7){
+                setterAuto(abajoIzq,simbolo);
+            }else if(elegida==8){
+                setterAuto(abajoMed,simbolo);
+            }else if(elegida==9){
+                setterAuto(abajoDer,simbolo);
+            }
         }
+
+
+        return casillas.size();
     }
 
-    private void setScore(String estado){
+    private String setScore(String estado){
         int valor=Integer.parseInt(score.getText().toString());
         String total;
 
@@ -233,12 +276,16 @@ public class MainActivity2 extends AppCompatActivity {
             valor = valor + 10;
             total = Integer.toString(valor);
             score.setText(total);
-
         }else if (estado.equals("perdiste")){
             valor=valor-5;
             total= Integer.toString(valor);
             score.setText(total);
+        }else{
+            total=Integer.toString(valor);
+            score.setText(total);
         }
+
+        return "nada";
     }
 
     public String comprobarJugada(String jugador){
@@ -351,9 +398,48 @@ public class MainActivity2 extends AppCompatActivity {
                 abajoIzq.setBackgroundColor(rojo);
                 medioMed.setBackgroundColor(rojo);
                 arribaDer.setBackgroundColor(rojo);
-                arribaIzq.setEnabled(false); arribaMed.setEnabled(false);medioIzq.setEnabled(false);medioDer.setEnabled(false);abajoIzq.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
+                arribaIzq.setEnabled(false); arribaMed.setEnabled(false);medioIzq.setEnabled(false);medioDer.setEnabled(false);abajoDer.setEnabled(false);abajoMed.setEnabled(false);
                 return "perdiste";
             }
+        }else if(medioMed.getText().toString().equals(arribaMed.getText().toString()) && abajoMed.getText().toString().equals(medioMed.getText().toString()) && (abajoMed.getText().toString().equals("X") || abajoMed.getText().toString().equals("O"))) {
+            if(abajoMed.getText().toString().equals(jugador)){
+
+
+                medioMed.setBackgroundColor(verde);
+                arribaMed.setBackgroundColor(verde);
+                abajoMed.setBackgroundColor(verde);
+                arribaIzq.setEnabled(false); arribaDer.setEnabled(false);medioIzq.setEnabled(false);medioDer.setEnabled(false);abajoDer.setEnabled(false);abajoIzq.setEnabled(false);
+
+                return "ganaste";
+            }else{
+
+                medioMed.setBackgroundColor(rojo);
+                arribaMed.setBackgroundColor(rojo);
+                abajoMed.setBackgroundColor(rojo);
+                arribaIzq.setEnabled(false); arribaDer.setEnabled(false);medioIzq.setEnabled(false);medioDer.setEnabled(false);abajoDer.setEnabled(false);abajoIzq.setEnabled(false);
+                return "perdiste";
+            }
+
+        }else if(arribaDer.getText().toString().equals(abajoDer.getText().toString()) && abajoDer.getText().toString().equals(medioDer.getText().toString()) && (medioDer.getText().toString().equals("X") || medioDer.getText().toString().equals("O"))) {
+            if(medioDer.getText().toString().equals(jugador)){
+
+
+                arribaDer.setBackgroundColor(verde);
+                medioDer.setBackgroundColor(verde);
+                abajoDer.setBackgroundColor(verde);
+                arribaIzq.setEnabled(false); arribaMed.setEnabled(false);medioIzq.setEnabled(false);medioMed.setEnabled(false);abajoMed.setEnabled(false);abajoIzq.setEnabled(false);
+
+                return "ganaste";
+            }else{
+
+
+                arribaDer.setBackgroundColor(rojo);
+                medioDer.setBackgroundColor(rojo);
+                abajoDer.setBackgroundColor(rojo);
+                arribaIzq.setEnabled(false); arribaMed.setEnabled(false);medioIzq.setEnabled(false);medioMed.setEnabled(false);abajoMed.setEnabled(false);abajoIzq.setEnabled(false);
+                return "perdiste";
+            }
+
         }else{
             return "nada";
         }
